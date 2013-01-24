@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AShareRenderService</string>
+    <string name="start">Start Render Service</string>
+</resources>
