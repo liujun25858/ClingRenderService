@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AShareRenderService</string>
     <string name="start">Start Render Service</string>
+    <string name="base_friendly_name">AShare Media Render V1</string>
 </resources>
