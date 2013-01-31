@@ -9,5 +9,5 @@ interface IPlayService {
     String IGetPlayerState();
     int IGetDuration();
     int IGetCurrentPosition();
-    void ISetUrl(String url);
+    void ISetUrl(String uri,String uriMetaData);
 }

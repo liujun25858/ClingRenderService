@@ -99,6 +99,7 @@ public class AShareRenderService extends AndroidUpnpServiceImpl implements PlayS
 					mServiceConnection, Context.BIND_AUTO_CREATE);
 			int count = RETRY;
 			while (count != 0) {
+			    LogUtil.logd(this, "Retry "+count+" get player service-> "+mPlayService, DEBUG);
 				if (mPlayService != null) {
 					break;
 				}
@@ -110,7 +111,6 @@ public class AShareRenderService extends AndroidUpnpServiceImpl implements PlayS
 				count--;
 			}
 		}
-		LogUtil.logd(this, "Get PlayService "+mPlayService, DEBUG);
 		return mPlayService;
 	}
 
