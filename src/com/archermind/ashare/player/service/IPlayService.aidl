@@ -1,7 +1,7 @@
 package com.archermind.ashare.player.service;
 
 interface IPlayService {
-    void IPlay(String mediaType);
+    void IPlay();
     void IPause();
     void IStop();
     void ISeek(int whereto);

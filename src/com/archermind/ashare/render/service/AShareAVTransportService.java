@@ -196,7 +196,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
         LogUtil.logv(this, "play", DEBUG);
         if (mGetter.getPlayService() != null) {
             try {
-                mGetter.getPlayService().IPlay("Media:Video");
+                mGetter.getPlayService().IPlay();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
