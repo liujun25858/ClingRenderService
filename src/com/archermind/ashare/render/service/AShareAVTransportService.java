@@ -10,13 +10,14 @@ import org.teleal.cling.model.ModelUtil;
 import org.teleal.cling.model.types.UnsignedIntegerFourBytes;
 import org.teleal.cling.support.avtransport.AVTransportException;
 import org.teleal.cling.support.avtransport.AbstractAVTransportService;
-import org.teleal.cling.support.contentdirectory.DIDLParser;
 import org.teleal.cling.support.model.DeviceCapabilities;
 import org.teleal.cling.support.model.MediaInfo;
 import org.teleal.cling.support.model.PositionInfo;
 import org.teleal.cling.support.model.SeekMode;
 import org.teleal.cling.support.model.TransportInfo;
 import org.teleal.cling.support.model.TransportSettings;
+import org.teleal.cling.support.model.TransportState;
+import org.teleal.cling.support.model.TransportStatus;
 
 import android.os.RemoteException;
 
@@ -132,6 +133,16 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             UnsignedIntegerFourBytes arg0)
             throws AVTransportException {
         LogUtil.logv(this, "getTransportInfo", DEBUG);
+        if (mGetter.getPlayService() != null) {
+            TransportState state = TransportState.STOPPED;
+            try {
+                state = TransportState.valueOrCustomOf(mGetter.getPlayService().IGetPlayerState());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            LogUtil.logv(this, "TransportStatus->"+state, DEBUG);
+            return new TransportInfo(state,TransportStatus.OK);
+        }
         return null;
     }
 

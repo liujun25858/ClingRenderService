@@ -45,7 +45,6 @@ public class AShareConnectionManagerService extends ConnectionManagerService {
         sSupportFormats.add(new MimeType("image", "vnd.wap.wbmp"));
     }
     public AShareConnectionManagerService() {
-        LogUtil.logv(this, "Creater", DEBUG);
         for (MimeType mt : sSupportFormats) {
             try {
                 LogUtil.logv(this, "Supported MIME type: " + mt,DEBUG);
