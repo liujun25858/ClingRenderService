@@ -12,8 +12,10 @@ import org.teleal.cling.support.avtransport.AVTransportException;
 import org.teleal.cling.support.avtransport.AbstractAVTransportService;
 import org.teleal.cling.support.model.DeviceCapabilities;
 import org.teleal.cling.support.model.MediaInfo;
+import org.teleal.cling.support.model.PlayMode;
 import org.teleal.cling.support.model.PositionInfo;
 import org.teleal.cling.support.model.SeekMode;
+import org.teleal.cling.support.model.StorageMedium;
 import org.teleal.cling.support.model.TransportInfo;
 import org.teleal.cling.support.model.TransportSettings;
 import org.teleal.cling.support.model.TransportState;
@@ -56,7 +58,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             UnsignedIntegerFourBytes arg0)
             throws AVTransportException {
         LogUtil.logv(this, "getDeviceCapabilities", DEBUG);
-        return null;
+        return new DeviceCapabilities(new StorageMedium[]{StorageMedium.NETWORK});
     }
 
     @Override
@@ -156,7 +158,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             UnsignedIntegerFourBytes arg0)
             throws AVTransportException {
         LogUtil.logv(this, "getTransportSettings", DEBUG);
-        return null;
+        return new TransportSettings(PlayMode.NORMAL);
     }
 
     @Override
@@ -301,13 +303,6 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             String arg1)
             throws AVTransportException {
         LogUtil.logv(this, "setRecordQualityMode", DEBUG);
-        if (mGetter.getPlayService() != null) {
-            try {
-                mGetter.getPlayService().IStop();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
