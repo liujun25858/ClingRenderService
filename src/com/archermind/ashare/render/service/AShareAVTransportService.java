@@ -16,6 +16,7 @@ import org.teleal.cling.support.model.PlayMode;
 import org.teleal.cling.support.model.PositionInfo;
 import org.teleal.cling.support.model.SeekMode;
 import org.teleal.cling.support.model.StorageMedium;
+import org.teleal.cling.support.model.TransportAction;
 import org.teleal.cling.support.model.TransportInfo;
 import org.teleal.cling.support.model.TransportSettings;
 import org.teleal.cling.support.model.TransportState;
@@ -30,6 +31,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
     private final static int TIME_HOUR = TIME_MINUTE * 60;
 
     private String mCurrentURI;
+    private String mCurrentMetaData;
 
     private PlayServiceGetter mGetter;
 
@@ -44,7 +46,38 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             UnsignedIntegerFourBytes arg0)
             throws AVTransportException {
         LogUtil.logv(this, "getCurrentTransportActions", DEBUG);
-        return null;
+        TransportAction [] actions = null;
+        if (mGetter.getPlayService() != null) {
+            try {
+                TransportState state = TransportState.valueOrCustomOf(mGetter.getPlayService().IGetPlayerState());
+                switch (state) {
+                    case STOPPED:
+                        actions = new TransportAction [] {
+                                TransportAction.Play
+                        };
+                        break;
+                    case PLAYING:
+                        actions = new TransportAction [] {
+                                TransportAction.Stop,
+                                TransportAction.Seek,
+                                TransportAction.Pause
+                        };
+                    case PAUSED_PLAYBACK:
+                        actions = new TransportAction [] {
+                                TransportAction.Play,
+                                TransportAction.Stop,
+                                TransportAction.Pause,
+                                TransportAction.Seek
+                        };
+                    default:
+                        actions = null;
+                        break;
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return ModelUtil.toCommaSeparatedList(actions);
     }
 
     @Override
@@ -78,7 +111,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             UnsignedIntegerFourBytes arg0)
             throws AVTransportException {
         LogUtil.logv(this, "getMediaInfo", DEBUG);
-        return null;
+        return new MediaInfo(mCurrentURI, mCurrentMetaData);
     }
 
     @Override
@@ -261,6 +294,7 @@ public class AShareAVTransportService extends AbstractAVTransportService {
             throws AVTransportException {
         LogUtil.logv(this, "setAVTransportURI", DEBUG);
         mCurrentURI = arg1;
+        mCurrentMetaData = arg2;
         if (mGetter.getPlayService() != null) {
             try {
                 mGetter.getPlayService().ISetUrl(arg1, arg2);
